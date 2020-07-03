@@ -63,7 +63,7 @@ class UserProfile( AbstractBaseUser, PermissionsMixin ):
 		return self.email
 
 class ProfileFeedItem( models.Model ):
-	"""Profiles feed"""
+	"""Profile's feed"""
 
 	user_profile = models.ForeignKey( "UserProfile", on_delete = models.CASCADE )
 	feed_text = models.CharField( max_length = 255 )

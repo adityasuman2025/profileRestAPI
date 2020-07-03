@@ -8,6 +8,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 from . import permissions
 from . import serializers
@@ -115,7 +117,7 @@ class UserProfileViewSet( viewsets.ModelViewSet ):
 	"""Handles creating and updating profiles"""
 
 	serializer_class = serializers.UserProfileSerializer
-	queryset = models.UserProfile.objects.all()
+	queryset = models.UserProfile.objects.all() # to display/list output from a model/database on GET rqst
 
 	authentication_classes = ( TokenAuthentication, )
 	permission_classes = ( permissions.UpdateOwnProfile, )
@@ -132,3 +134,19 @@ class LoginViewSet( viewsets.ViewSet ):
 		"""use the ObtainAuthToken APIView to validate and create a token"""
 
 		return ObtainAuthToken().post( request )
+
+
+class UserProfileFeedViewSet( viewsets.ModelViewSet ):
+	"""Handles creating, reading and updating profile feed items"""
+
+	authentication_classes = ( TokenAuthentication, )
+	serializer_class = serializers.ProfileFeedItemSerializer
+	queryset = models.ProfileFeedItem.objects.all() # to display/list output from a model/database on GET rqst
+	permission_classes = ( permissions.PostOwnFeed, IsAuthenticated )
+
+	def perform_create( self, serializer ):
+		"""sets the user_profile column value of the Profilefeed model as the logged in user"""
+
+		serializer.save( user_profile = self.request.user )
+
+
