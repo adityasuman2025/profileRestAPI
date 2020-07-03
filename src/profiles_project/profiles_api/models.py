@@ -61,3 +61,16 @@ class UserProfile( AbstractBaseUser, PermissionsMixin ):
 		"""Django uses this when it needs to the convert object to a string"""
 
 		return self.email
+
+class ProfileFeedItem( models.Model ):
+	"""Profiles feed"""
+
+	user_profile = models.ForeignKey( "UserProfile", on_delete = models.CASCADE )
+	feed_text = models.CharField( max_length = 255 )
+	created_on = models.DateTimeField( auto_now_add = True )
+
+	def __str__( self ):
+		"""Returns the model as a string"""
+
+		return self.feed_text
+
