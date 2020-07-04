@@ -1,1 +1,1 @@
-web: gunicorn src/profiles_project/profiles_project.wsgi
+web: gunicorn src/profiles_project/profiles_project.wsgi --log-file -
