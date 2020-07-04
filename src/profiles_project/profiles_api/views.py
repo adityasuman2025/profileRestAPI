@@ -148,5 +148,3 @@ class UserProfileFeedViewSet( viewsets.ModelViewSet ):
 		"""sets the user_profile column value of the Profilefeed model as the logged in user"""
 
 		serializer.save( user_profile = self.request.user )
-
-
